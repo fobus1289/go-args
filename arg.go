@@ -1,15 +1,19 @@
 package go_args
 
-import "flag"
+import (
+	"errors"
+	"flag"
+	"fmt"
+)
 
-func GetMapArgs(keys ...string) map[string]string {
+func GetMapArgs(setError bool, keys ...string) map[string]string {
 
 	var flags = map[string]*string{}
 
 	for _, key := range keys {
-		var value *string
-		flag.StringVar(value, key, "", "")
-		flags[key] = value
+		var value string
+		flag.StringVar(&value, key, "", "")
+		flags[key] = &value
 	}
 
 	flag.Parse()
@@ -17,6 +21,11 @@ func GetMapArgs(keys ...string) map[string]string {
 	var resultFlags = map[string]string{}
 
 	for k, v := range flags {
+
+		if setError && *v == "" {
+			panic(errors.New(fmt.Sprintf("not found value for key: %s", k)))
+		}
+
 		resultFlags[k] = *v
 	}
 
