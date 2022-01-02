@@ -7,26 +7,17 @@ import (
 var keys = []string{"port", "address"}
 
 func TestSetErrorTrueArgs(t *testing.T) {
-	defer func() {
-		if err := recover(); err != nil {
-			t.Log("success")
-		} else {
-			t.Error("Error")
-		}
-	}()
-
-	GetMapArgs(true, keys...)
-
+	if _, err := GetMapArgs(true, keys...); err != nil {
+		t.Log("success")
+	} else {
+		t.Error("Error")
+	}
 }
 
 func TestSetErrorFalseArgs(t *testing.T) {
-	defer func() {
-		if err := recover(); err != nil {
-			t.Error(err)
-		} else {
-			t.Log("success")
-		}
-	}()
-
-	GetMapArgs(false, keys...)
+	if _, err := GetMapArgs(false, keys...); err != nil {
+		t.Error("Error")
+	} else {
+		t.Log("success")
+	}
 }

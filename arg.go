@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func GetMapArgs(setError bool, keys ...string) map[string]string {
+func GetMapArgs(setError bool, keys ...string) (map[string]string, error) {
 
 	var flags = map[string]*string{}
 
@@ -23,11 +23,11 @@ func GetMapArgs(setError bool, keys ...string) map[string]string {
 	for k, v := range flags {
 
 		if setError && *v == "" {
-			panic(errors.New(fmt.Sprintf("not found value for key: %s", k)))
+			return nil, errors.New(fmt.Sprintf("not found value for key: %s", k))
 		}
 
 		resultFlags[k] = *v
 	}
 
-	return resultFlags
+	return resultFlags, nil
 }
